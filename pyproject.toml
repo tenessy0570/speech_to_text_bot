@@ -7,11 +7,14 @@ authors = ["tenessy0570 <tenessy0570@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 SpeechRecognition = "^3.9.0"
-pydub = "^0.25.1"
 PyAudio = "^0.2.13"
 SQLAlchemy = "^2.0.4"
 aiogram = "^2.25.1"
 pre-commit = "^3.1.0"
+python-dotenv = "^1.0.0"
+asyncio = "^3.4.3"
+aiohttp = "^3.8.4"
+ffmpeg-python = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
