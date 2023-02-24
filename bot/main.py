@@ -6,7 +6,7 @@ from aiogram import types
 
 import config
 from bot import utils
-from bot.utils import convert_audio_file
+from file_converter.file_converter import FileConverter
 from speech_converter.speech_converter import SpeechConverter
 
 bot = Bot(token=config.BOT_TOKEN)
@@ -25,14 +25,16 @@ async def speech_to_text(message: types.Message):
 
     await voice.download(config.UNCONVERTED_MESSAGES_PATH / unconverted_filename)
 
-    created_file_path = convert_audio_file(
+    created_file_path = FileConverter.convert_file(
         input_path=config.UNCONVERTED_MESSAGES_PATH / unconverted_filename,
         output_path=config.CONVERTED_MESSAGES_PATH / converted_filename,
-        format_=new_format,
+        new_format=new_format,
     )
 
     text = SpeechConverter.audio_to_text(
-        filename=created_file_path, language="en-US")
+        filename=created_file_path, language="en-US"
+    )
+
     await message.reply(text)
 
 
