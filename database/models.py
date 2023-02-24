@@ -1,5 +1,8 @@
-from sqlalchemy import String, Integer
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 
 from database.db import engine
 
@@ -16,6 +19,6 @@ class BarItem(Base):
     amount: Mapped[int] = mapped_column(Integer)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
