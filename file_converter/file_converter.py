@@ -13,7 +13,6 @@ class BaseConverter:
             cls,
             input_path: str | Path,
             output_path: str | Path,
-            new_format: str
     ) -> created_file_path:
         pass
 
@@ -24,7 +23,6 @@ class FileConverter(BaseConverter):
             cls,
             input_path: str | Path,
             output_path: str | Path,
-            new_format: str
     ) -> created_file_path:
         if not isinstance(output_path, str):
             output_path = str(output_path)
@@ -34,8 +32,7 @@ class FileConverter(BaseConverter):
 
         stream = ffmpeg.input(input_path)
 
-        new_file_path = output_path + "." + new_format
-        stream = ffmpeg.output(stream, new_file_path)
+        stream = ffmpeg.output(stream, output_path)
         ffmpeg.run(stream)
 
-        return new_file_path
+        return output_path
