@@ -20,16 +20,14 @@ async def speech_to_text(message: types.Message):
     # For file to be able to be read by speech_recognition
     new_format = "aiff"
 
-    path_for_unconverted_file = str(
-        utils.resolve_name_for_new_unconverted_file(),
-    )
-    path_for_converted_file = str(utils.resolve_name_for_new_converted_file())
+    unconverted_filename = utils.resolve_name_for_new_unconverted_file()
+    converted_filename = utils.resolve_name_for_new_converted_file()
 
-    await voice.download(path_for_unconverted_file)
+    await voice.download(config.UNCONVERTED_MESSAGES_PATH / unconverted_filename)
 
     created_file_path = convert_audio_file(
-        input_path=path_for_unconverted_file,
-        output_path=path_for_converted_file,
+        input_path=config.UNCONVERTED_MESSAGES_PATH / unconverted_filename,
+        output_path=config.CONVERTED_MESSAGES_PATH / converted_filename,
         format_=new_format,
     )
 

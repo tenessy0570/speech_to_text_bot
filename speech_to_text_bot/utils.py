@@ -14,7 +14,7 @@ def resolve_name_for_new_unconverted_file() -> str:
 
     digit = 1 if not amount_of_files_inside_dir else amount_of_files_inside_dir
     filename = DEFAULT_UNCONVERTED_FILENAME + "_" + str(digit)
-    return UNCONVERTED_MESSAGES_PATH / filename
+    return filename
 
 
 def resolve_name_for_new_converted_file() -> str:
@@ -24,10 +24,16 @@ def resolve_name_for_new_converted_file() -> str:
 
     digit = 1 if not amount_of_files_inside_dir else amount_of_files_inside_dir
     filename = DEFAULT_CONVERTED_FILENAME + "_" + str(digit)
-    return CONVERTED_MESSAGES_PATH / filename
+    return filename
 
 
 def convert_audio_file(input_path, output_path, format_) -> str:
+    if not isinstance(input_path, str):
+        input_path = str(input_path)
+
+    if not isinstance(output_path, str):
+        output_path = str(output_path)
+
     stream = ffmpeg.input(input_path)
 
     new_file_path = output_path + "." + format_
