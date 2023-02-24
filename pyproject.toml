@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "speech_to_text_bot"
+version = "0.1.0"
+description = ""
+authors = ["tenessy0570 <tenessy0570@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+SpeechRecognition = "^3.9.0"
+pydub = "^0.25.1"
+PyAudio = "^0.2.13"
+SQLAlchemy = "^2.0.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
