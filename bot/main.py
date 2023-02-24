@@ -5,9 +5,9 @@ from aiogram import Dispatcher
 from aiogram import types
 
 import config
-from speech_to_text_bot import utils
-from speech_to_text_bot.utils import audio_to_text
-from speech_to_text_bot.utils import convert_audio_file
+from bot import utils
+from bot.utils import convert_audio_file
+from speech_converter.speech_converter import SpeechConverter
 
 bot = Bot(token=config.BOT_TOKEN)
 dp = Dispatcher(bot)
@@ -31,7 +31,8 @@ async def speech_to_text(message: types.Message):
         format_=new_format,
     )
 
-    text = audio_to_text(filename=created_file_path, language="en-US")
+    text = SpeechConverter.audio_to_text(
+        filename=created_file_path, language="en-US")
     await message.reply(text)
 
 

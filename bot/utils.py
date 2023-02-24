@@ -1,5 +1,4 @@
 import ffmpeg
-import speech_recognition as sr
 
 from config import CONVERTED_MESSAGES_PATH
 from config import DEFAULT_CONVERTED_FILENAME
@@ -41,13 +40,3 @@ def convert_audio_file(input_path, output_path, format_) -> str:
     ffmpeg.run(stream)
 
     return new_file_path
-
-
-def audio_to_text(filename: str, language="en-US") -> str:
-    r = sr.Recognizer()
-
-    with sr.AudioFile(filename) as source:
-        audio_data = r.record(source)
-        text = r.recognize_google(audio_data, language=language)
-
-    return text
