@@ -35,7 +35,7 @@ async def speech_to_text(message: types.Message):
     for button in buttons:
         keyboard.add(button)
 
-    keyboard.add(types.InlineKeyboardButton("Cancel", callback_data="cancel"))
+    keyboard.add(types.InlineKeyboardButton("Cancel", callback_data="Cancel"))
 
     await message.reply("Choose correct variant", reply_markup=keyboard)
 
@@ -44,7 +44,7 @@ async def speech_to_text(message: types.Message):
 async def handle_said_sentence(message: types.Message):
     data: str = message.text
 
-    if data == "cancel":
+    if data == "Cancel":
         return None
 
     binary_operator, amount, item_name = utils.parse_query(data)
@@ -58,7 +58,7 @@ async def handle_said_sentence(message: types.Message):
             found_item: CafeItem | None = session.scalar(query)
 
             if found_item is None:
-                await message.reply(f"Item named {item_name} doesn't exist.")
+                await message.reply(f"Item with `{item_name}` in its name doesn't exist.")
                 return None
 
             old_amount = found_item.amount
