@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     with db_session as session:
         session.add_all(
-            BarItem(name=item.lower(), amount=amount)
+            BarItem(name=item, amount=amount)
             for item, amount in bar_items
         )
         session.commit()

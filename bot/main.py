@@ -67,7 +67,7 @@ async def handle_said_sentence(message: types.Message):
     try:
         with db_session as session:
             query = select(BarItem).where(
-                BarItem.name.op('regexp')(fr'.*{item_name}.*')
+                BarItem.name.ilike(f"%{item_name}%")  # Case insensitive
             )
             found_item: BarItem | None = session.scalar(query)
 
