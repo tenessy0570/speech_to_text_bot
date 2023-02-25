@@ -5,7 +5,6 @@ from aiogram import types
 
 import config
 from bot import utils
-from bot.utils import hold_files_temporarily
 from file_converter.file_converter import FileConverter
 from speech_converter.speech_converter import SpeechConverter
 
@@ -17,19 +16,15 @@ dp = Dispatcher(bot)
 async def speech_to_text(message: types.Message):
     voice = message.voice
 
-    # For file to be able to be read by speech_recognition
+    # Convert to aiff so file can be read by speech-recognition
     new_format = ".aiff"
 
-    name_for_unconverted_file = utils.resolve_name_for_new_unconverted_file()
-    name_for_converted_file = utils.resolve_name_for_new_converted_file()
-
-    unconverted_file_path = \
-        config.UNCONVERTED_VOICE_FILES_PATH / \
-        (name_for_unconverted_file + new_format)
-
-    converted_file_path = \
-        config.CONVERTED_VOICE_FILES_PATH / \
-        (name_for_converted_file + new_format)
+    unconverted_file_path = utils.resolve_new_unconverted_file_path(
+        new_format=new_format
+    )
+    converted_file_path = utils.resolve_new_converted_file_path(
+        new_format=new_format
+    )
 
     await voice.download(unconverted_file_path)
 
@@ -39,7 +34,7 @@ async def speech_to_text(message: types.Message):
     )
 
     # Delete files after exiting context manager
-    with hold_files_temporarily(converted_file_path, unconverted_file_path):
+    with utils.hold_files_temporarily(converted_file_path, unconverted_file_path):
         text = SpeechConverter.audio_to_text(
             filename=created_file_path, language="en-US"
         )

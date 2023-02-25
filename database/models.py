@@ -4,6 +4,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
+from database.db import db_session
 from database.db import engine
 
 
@@ -22,3 +23,20 @@ class BarItem(Base):
 if __name__ == "__main__":
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+
+    bar_items = (
+        ("Matua PN", 3),
+        ("Norton Malbec", 2),
+        ("Anakena CS", 2),
+        ("RL Johnnie Wal.", 1),
+        ("Martini Rosso", 1),
+        ("Tanqueray", 3),
+        ("Limoncello", 1)
+    )
+
+    with db_session as session:
+        session.add_all(
+            BarItem(name=item.lower(), amount=amount)
+            for item, amount in bar_items
+        )
+        session.commit()
