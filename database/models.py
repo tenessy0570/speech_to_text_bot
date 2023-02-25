@@ -12,8 +12,8 @@ class Base(DeclarativeBase):
     pass
 
 
-class BarItem(Base):
-    __tablename__ = "bar_item"
+class CafeItem(Base):
+    __tablename__ = "cafe_items"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30), index=True, unique=True)
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
-    bar_items = (
+    cafe_items = (
         ("Matua PN", 3),
         ("Norton Malbec", 2),
         ("Anakena CS", 2),
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     with db_session as session:
         session.add_all(
-            BarItem(name=item, amount=amount)
-            for item, amount in bar_items
+            CafeItem(name=item, amount=amount)
+            for item, amount in cafe_items
         )
         session.commit()

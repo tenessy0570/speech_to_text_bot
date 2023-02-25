@@ -7,7 +7,7 @@ from sqlalchemy import select
 import config
 from bot import utils
 from database.db import db_session
-from database.models import BarItem
+from database.models import CafeItem
 
 bot = Bot(token=config.BOT_TOKEN)
 dp = Dispatcher(bot)
@@ -52,10 +52,10 @@ async def handle_said_sentence(message: types.Message):
 
     try:
         with db_session as session:
-            query = select(BarItem).where(
-                BarItem.name.ilike(f"%{item_name}%")  # Case-insensitive
+            query = select(CafeItem).where(
+                CafeItem.name.ilike(f"%{item_name}%")  # Case-insensitive
             )
-            found_item: BarItem | None = session.scalar(query)
+            found_item: CafeItem | None = session.scalar(query)
 
             if found_item is None:
                 await message.reply(f"Item named {item_name} doesn't exist.")
