@@ -13,7 +13,12 @@ class BaseConverter:
 
 class SpeechConverter(BaseConverter):
     @classmethod
-    def audio_to_text(cls, filename: str | Path, language: str = "en-US") -> str:
+    def audio_to_text(
+            cls,
+            filename: str | Path,
+            language: str = "en-US",
+            show_all: bool = False
+    ) -> str | dict:
         if not isinstance(filename, (str, Path)):
             raise TypeError("Allowed types for filename argument: [str, Path]")
 
@@ -24,6 +29,8 @@ class SpeechConverter(BaseConverter):
 
         with sr.AudioFile(filename) as source:
             audio_data = r.record(source)
-            text = r.recognize_google(audio_data, language=language)
+            text = r.recognize_google(
+                audio_data, language=language, show_all=show_all
+            )
 
         return text

@@ -56,7 +56,10 @@ def resolve_new_unconverted_file_path(new_format: str) -> Path:
     return unconverted_file_path
 
 
-async def retrieve_text_from_voice(voice: aiogram.types.Voice) -> str:
+async def retrieve_text_from_voice(
+        voice: aiogram.types.Voice,
+        show_all: bool = False
+) -> str | dict:
     # Convert to aiff so file can be read by speech-recognition
     new_format = ".aiff"
 
@@ -77,7 +80,7 @@ async def retrieve_text_from_voice(voice: aiogram.types.Voice) -> str:
     # Delete files after exiting context manager
     with hold_files_temporarily(converted_file_path, unconverted_file_path):
         text = SpeechConverter.audio_to_text(
-            filename=created_file_path, language="en-US"
+            filename=created_file_path, language="en-US", show_all=show_all
         )
 
     return text
