@@ -2,9 +2,12 @@ from aiogram import Bot
 from aiogram import Dispatcher
 from aiogram import executor
 from aiogram import types
+from sqlalchemy import select
 
 import config
 from bot import utils
+from database.db import db_session
+from database.models import BarItem
 
 bot = Bot(token=config.BOT_TOKEN)
 dp = Dispatcher(bot)
@@ -53,6 +56,41 @@ async def handle_said_sentence(message: types.Message):
         binary_operator, amount, item_name = data.split(" ")
 
     await message.reply(f"{binary_operator=}, {amount=}, {item_name=}")
+
+    binary_method_by_string = {
+        "plus": "__add__",
+        "+": "__add__",
+        "minus": "__sub__",
+        "-": "__sub__"
+    }
+
+    try:
+        with db_session as session:
+            query = select(BarItem).where(
+                BarItem.name.op('regexp')(fr'.*{item_name}.*')
+            )
+            found_item: BarItem | None = session.scalar(query)
+
+            if found_item is None:
+                await message.reply(f"Item named {item_name} doesn't exist.")
+                return None
+
+            old_amount = found_item.amount
+            new_amount = getattr(
+                old_amount,
+                binary_method_by_string[binary_operator]
+            )(int(amount))
+            found_item_name = found_item.name
+
+            found_item.amount = new_amount
+
+            session.commit()
+    except Exception as exc:
+        await message.reply(repr(exc))
+    finally:
+        result_message = f"Updated `{found_item_name}` amount from {old_amount} to {new_amount}"
+        await message.reply(result_message)
+
 
 if __name__ == "__main__":
     executor.start_polling(dp)
