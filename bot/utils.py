@@ -84,3 +84,38 @@ async def retrieve_text_from_voice(
         )
 
     return text
+
+
+def parse_query(data: str) -> tuple[str, str, str]:
+    binary_operator = amount = item_name = "null"
+
+    if data.startswith(("+", "-")):
+        binary_operator = data[0]
+        splitted = data[1:].strip().split(" ")
+        amount, item_name = splitted[0], " ".join(splitted[1:])
+    elif data.startswith(("plus", "minus")):
+        splitted = data.split(" ")
+        binary_operator, amount, item_name = \
+            splitted[0], splitted[1], " ".join(splitted[2:])
+
+    return binary_operator, amount, item_name
+
+
+def execute_binary_operation(
+        left_operand: int,
+        right_operand: int,
+        binary_operator: str
+) -> int:
+    binary_method_by_string = {
+        "plus": "__add__",
+        "+": "__add__",
+        "minus": "__sub__",
+        "-": "__sub__"
+    }
+
+    result = getattr(
+        left_operand,
+        binary_method_by_string[binary_operator]
+    )(int(right_operand))
+
+    return result

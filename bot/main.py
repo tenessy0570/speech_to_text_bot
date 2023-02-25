@@ -47,22 +47,8 @@ async def handle_said_sentence(message: types.Message):
     if data == "cancel":
         return None
 
-    binary_operator = amount = item_name = "null"
-
-    if data.startswith(("+", "-")):
-        binary_operator = data[0]
-        amount, item_name = data[1:].strip().split(" ")
-    elif data.startswith(("plus", "minus")):
-        binary_operator, amount, item_name = data.split(" ")
-
+    binary_operator, amount, item_name = utils.parse_query(data)
     await message.reply(f"{binary_operator=}, {amount=}, {item_name=}")
-
-    binary_method_by_string = {
-        "plus": "__add__",
-        "+": "__add__",
-        "minus": "__sub__",
-        "-": "__sub__"
-    }
 
     try:
         with db_session as session:
@@ -76,10 +62,11 @@ async def handle_said_sentence(message: types.Message):
                 return None
 
             old_amount = found_item.amount
-            new_amount = getattr(
-                old_amount,
-                binary_method_by_string[binary_operator]
-            )(int(amount))
+            new_amount = utils.execute_binary_operation(
+                left_operand=old_amount,
+                right_operand=int(amount),
+                binary_operator=binary_operator
+            )
             found_item_name = found_item.name
 
             found_item.amount = new_amount
