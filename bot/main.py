@@ -48,6 +48,11 @@ async def handle_said_sentence(message: types.Message):
         return None
 
     binary_operator, amount, item_name = utils.parse_query(data)
+
+    if binary_operator == amount == item_name == "null":
+        await message.reply("Wrong query format.")
+        return None
+
     await message.reply(f"{binary_operator=}, {amount=}, {item_name=}")
 
     try:
