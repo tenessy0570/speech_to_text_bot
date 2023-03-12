@@ -14,3 +14,5 @@ CONVERTED_VOICE_FILES_PATH = SAVE_VOICE_MESSAGE_PATH / "converted_files"
 
 DEFAULT_UNCONVERTED_FILENAME = "unconverted"
 DEFAULT_CONVERTED_FILENAME = "converted"
+
+LOGGING_FILE = Path(__file__).parent / "logs.txt"

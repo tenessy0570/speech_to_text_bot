@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Bot
 from aiogram import Dispatcher
 from aiogram import executor
@@ -11,6 +13,10 @@ from database.models import CafeItem
 
 bot = Bot(token=config.BOT_TOKEN)
 dp = Dispatcher(bot)
+
+
+logging.basicConfig(filename=config.LOGGING_FILE,
+                    encoding='utf-8', level=logging.DEBUG)
 
 
 @dp.message_handler(content_types=["voice"])
