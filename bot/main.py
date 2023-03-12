@@ -15,8 +15,12 @@ bot = Bot(token=config.BOT_TOKEN)
 dp = Dispatcher(bot)
 
 
-logging.basicConfig(filename=config.LOGGING_FILE,
-                    encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(
+    filename=config.LOGGING_FILE,
+    encoding='utf-8',
+    level=logging.DEBUG,
+    format="[%(asctime)s] [%(name)s] [%(levelname)s] > %(message)s"
+)
 
 
 @dp.message_handler(content_types=["voice"])
